@@ -1,5 +1,8 @@
 source 'https://rubygems.org'
 
+ruby '2.1.2'
+gem 'rails_12factor'
+
 gem 'byebug'
 gem 'underscore-rails'
 gem 'knockoutjs-rails'

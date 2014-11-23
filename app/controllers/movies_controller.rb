@@ -1,10 +1,12 @@
 require 'date'
+require 'pathname'
 
 class MoviesController < ApplicationController
 
   before_action :require_login, only: [:create, :edit, :copy]
   
-  @@movies = (open('/Users/mbriskin/Desktop/movie_log/lib/movies.txt')).read.split("\n")
+  path = File.join(Rails.root, 'lib', 'movies.txt')
+  @@movies = (open(path)).read.split("\n")
 
   respond_to :json, :html
 
