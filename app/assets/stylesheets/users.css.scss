@@ -1,0 +1,153 @@
+// Place all the styles related to the users controller here.
+// They will automatically be included in application.css.
+// You can use Sass (SCSS) here: http://sass-lang.com/
+
+.success {
+  color: green;
+  
+}
+
+.error {
+  color: red;
+}
+
+.message {
+  color: brown;
+  
+}
+
+body {
+  padding: 0px;
+  margin: 0px;
+}
+
+/* show page*/
+
+.movies_border {
+  border-top: 5px solid black;
+  border-bottom: 5px solid black;
+  padding: 10px;
+}
+
+.stats_border {
+  border-top: 5px solid black;
+  border-bottom: 5px solid black;
+  padding: 10px;
+}
+
+
+
+.profile_picture {
+  max-width: 100%;
+  max-height: 100%;
+  border: 10px solid black;
+}
+
+.profile_name {
+  color: gray;
+  font-weight: bold;
+  float: right;
+  font-size: 30px;
+  clear:both;
+}
+
+/* edit page */
+
+.edit_profile_picture {
+  max-width: 200px;
+  max-height: 200px;
+  min-height: 150px;
+}
+
+.left_intro {
+  background: green;
+  height: 100vh;
+  
+}
+
+.right_intro {
+  background: purple;
+  height: 100vh;
+  
+}
+
+.welcome_text {
+  text-align: center;
+  font-size: 90px;
+  color: black;
+  font-family: "Arial Black", Gadget, sans-serif;
+}
+
+.start_logging_button {
+  position: relative;
+  left: 39%;
+}
+
+.centered {
+  position: relative;
+
+  left: 37.5%;
+
+
+}
+
+.big_button {
+  width: 400px;
+  height: 100px;
+  background: lightgreen;
+  -moz-border-radius: 15px;
+  -webkit-border-radius: 15px;
+  border: 5px solid #009900;
+  padding: 5px;
+  position: relative;
+  top: 10%;
+  left: 15%;
+}
+
+.big_button span {
+  font-size: 50px;
+}
+
+/* login page */
+
+#login_background {
+  position: absolute;
+  height: 100%;
+  width: 100%;
+  z-index: -10;
+}
+
+.form_background {
+  background-color: rgba(44, 53, 57, .6);
+  overflow: hidden;
+  margin: 20px;
+  padding: 10px;
+
+}
+
+/* index page */
+
+.most_frequent_logger {
+  max-height: 150px;
+  border: 5px solid black;
+}
+
+.index_users_container {
+  border-top: 5px solid black;
+
+  padding: 10px;
+  margin: 10px;
+}
+
+.tiny_img {
+  height: 20px;
+  width: 20px;
+  border: 2px solid black;
+}
+
+.users_title {
+  font-weight: bold;
+  color: gray;
+  border-bottom: 2px solid black;
+
+}

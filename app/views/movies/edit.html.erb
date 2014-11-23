@@ -1,0 +1,78 @@
+<div class="edit_movie_container">
+
+  <%= link_to @movie.title, movie_path(@movie.id) %> 
+
+  <p> Data saves automatically. </p> 
+
+  <p data-bind="with: movie">
+    Title:
+    <input data-bind='value: title'> <br> <br>
+    Description:
+    <textarea class="form-control" rows="3" style="width: 50%" data-bind="value: description"></textarea> <br> <br>
+    Year:
+    <input data-bind='value: year'> <br> <br>
+    Length (minutes):
+    <input data-bind='value: length'> <br> <br>
+    Date Watched:
+    <input type="date" data-bind='value: date_watched'> <br> <br>
+    Watched With:
+    <input data-bind='value: watched_with'> <br> <br>
+    Your Rating:
+    <input data-bind='value: your_rating'>/100 <br> <br>
+    Average Rating:
+    <input data-bind='value: average_rating'>/100 <br> <br>
+    Notes:
+    <textarea class="form-control" rows="3" style="width: 50%" data-bind="value: notes, valueUpdate: 'keyup'"></textarea> <br> <br>
+
+  </p>
+
+
+
+</div>
+
+<div class="edit_movie_poster_container">
+  <img class="edit_movie_poster" src="<%= @movie.poster %>">
+
+  <form action="/uploaded_images/poster" method="POST" enctype="multipart/form-data">
+    Upload a movie poster:
+    <input type="file" name="uploaded_image"> <br>
+    <input type="hidden" name="movie_id" value="<%=@movie.id%>">
+    <input type="hidden" name="authenticity_token" value="<%= form_authenticity_token %>">
+    <input type="submit">
+  </form>
+
+<div>
+
+<script>
+
+function View(movieId) {
+
+  var self = this;
+
+  self.movie = ko.observable();
+
+  $.get('/movies/' + movieId + '.json', function(movie) {
+    var new_movie = new Movie(movie); 
+    self.movie(new_movie);
+
+    var new_movie = self.movie()
+
+    ko.computed(function() {
+
+    $.post('/movies/' + new_movie.id + '/edit', {movie: {title: new_movie.title(), length: new_movie.length(), description: new_movie.description(), year: new_movie.year(), date_watched: new_movie.date_watched(), your_rating: new_movie.your_rating(), average_rating: new_movie.average_rating(), watched_with: new_movie.watched_with(), notes: new_movie.notes()}})
+  })
+
+  });
+  
+  
+}
+
+var view = new View(<%= @movie.id%>);
+window.view = view;
+
+ko.applyBindings(view);
+
+
+
+</script>
+

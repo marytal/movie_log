@@ -1,0 +1,233 @@
+<!-- 
+To do: add right side, movie recommendations, other users, interesting articles -->
+
+<div id="everything_except_lightbox">
+  <%if @user && @user.id == @user_page.id%>
+
+  <%else%>
+ 
+  <%end%>
+
+  <br> <br>
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-md-4">
+        <img class="profile_picture" src="<%= @user_page.profile_picture%>">
+        <p class="profile_name"> <%= @user_page.name.capitalize %> </p> <br> <br> <br>
+        <%if @user%>
+          <li style="float: right; clear:both;"><%= link_to 'Edit Page', edit_user_path(@user.id) %></li>
+        <%end%>
+        <div class="stats_border">
+          <div class="table-responsive">
+            <table class="table table-bordered table-striped">
+              <thead><h4>Page Statistics</h4></thead>
+              <thead>
+                <tr>
+                  <td><strong>Total</strong></td>
+                  <td><strong></strong></td>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>Movies:</td>
+                  <td><span data-bind="text: count_movies"></span></td>
+                </tr>
+                <tr>
+                  <td>Hours:</td>
+                  <td><span data-bind="text: count_hours"></span></td>
+                </tr>
+                <tr>
+                  <td>Minutes:</td>
+                  <td><span data-bind="text: count_minutes"></span></td>
+                </tr>
+                <tr>
+                  <td>Seconds:</td>
+                  <td><span data-bind="text: count_seconds"></span></td>
+                </tr>
+                <thead>
+                <tr>
+                  <td><strong>Timeline</strong></td>
+                  <td><strong></strong></td>
+                </tr>
+              </thead>
+                <tr>
+                  <td>Most Watched:</td>
+                  <td>Coming Soon</td>
+                </tr>
+                <tr>
+                  <td>Favourite Movie:</td>
+                  <td>Coming Soon</td>
+                </tr>
+                <tr>
+                  <td>Most Recently Watched:</td>
+                  <td>Coming Soon</td>
+                </tr>
+                <tr>
+                  <td>Oldest Log:</td>
+                  <td>Coming Soon</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-5">
+        <div class="movies_border">
+          <h4 style="border-bottom: 1px solid black;">Movies</h4>
+          <%if @movies.length > 0%>
+            <div id="lightbox_switch_container">
+              <h6 style="max-width: 80px; text-align: center;">Click to view Slideshow!</h6>
+              <img id="lightbox_switch" src="https://lh6.ggpht.com/dGEEzjVO9OUyc3pfz0Ukq8je9DDY3EDSuPNtETe1x6-LoWqu_RYvFCE4rCX6BXsDXNk=w300"> <br>
+            </div>
+          <%elsif @user%>
+            Add your first movie above!
+          <%end%>
+          <br>
+          <div id="movies_container" data-bind="foreach: movies">
+            <a data-bind="text: title, attr: {href: show_url}"></a>
+            <br />
+          </div>
+        </div>
+      </div>
+      <div class="col-md-3">
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="lightbox" class="invisible" data-bind="with: lightbox_movie">
+  <h2 id="close_lightbox" data-bind="click: click_close">X</h2>
+  
+  <h2 class="lightbox_title" data-bind="text: title"></h2>
+  <div class="col-md-4">
+    <img data-bind="attr: {src: poster}" class="lightbox_poster" src="#">
+  </div>
+  <div class="col-md-8">
+    <div class="stats">
+      <p>Year: <span data-bind="text: year"></span></p>
+      <p>Date Watched: <span data-bind="text: date_watched"></span></p>
+      <p style="padding-right: 10px;">Notes: <span data-bind="text: notes"></span></p>
+      <p>Your Rating: <span data-bind="text: your_rating"></span>/100</p>
+    </div> <br>
+  </div>
+  <span id="left_arrow" class="arrow" data-bind="click: click_left">&#8604;</span>
+  <span id="right_arrow" class="arrow" data-bind="click: click_right">&#8605;</span> <br> <br>
+  <div class="description" style="clear:both;"> 
+    <p data-bind="text: description"></p>
+  </div>
+
+  <div class="additional_images">
+    
+  </div>
+</div>
+
+
+
+<script>
+
+// Knockout stuff
+
+  var View = function() {
+    var self = this;
+
+
+
+    self.movies = ko.observable([]);
+    self.current_movie = ko.observable(0);
+    self.lightbox_movie = ko.observable();
+    
+    //stats functions
+
+    self.count_movies = ko.computed(function() {
+      return self.movies().length;
+    })
+
+    self.count_minutes = ko.computed(function() {
+      var sum = 0;
+      _.each(self.movies(), function(movie) {
+        sum += movie.length();
+      });
+      return sum;
+
+    })
+
+    self.count_hours = ko.computed(function() {
+       return (self.count_minutes() / 60.0).toFixed(3);
+    })
+
+    self.count_seconds = ko.computed(function() {
+       return (self.count_minutes() * 60);
+    })
+
+    self.most_watched = ko.computed(function() {
+      
+    })
+
+    // lightbox functions
+
+    ko.computed(function() {
+      var movies = self.movies()
+      if(movies && movies.length > 0)
+        self.lightbox_movie(movies[self.current_movie()]);
+    })
+    
+    $.get( window.location + "/movies.json", function(movies) {
+      movies = _.map(movies, function(movie) {
+        return new Movie(movie)
+      });
+
+      var length = movies.length;
+      _.each(movies, function(movie) {
+        movie.click_right = function() {
+          if(self.current_movie() >= length - 1){
+            self.current_movie(0);
+          } else {
+            self.current_movie(self.current_movie() + 1);
+          }
+        };
+        movie.click_left = function() {
+          if(self.current_movie() == 0){
+            self.current_movie(length - 1);
+          } else {
+            self.current_movie(self.current_movie() - 1);
+          }
+        };
+
+        movie.click_close = function() {
+          onCloseLightbox();
+        }
+      });
+
+      self.movies(movies);
+    });
+  }
+
+// Event Listeners && new View
+
+ var assignAction = function(e) {
+    if (e.keyCode == 27) {
+      e.preventDefault();
+      onCloseLightbox();
+    } else if(e.keyCode == 37) {
+      e.preventDefault();
+      view.lightbox_movie().click_left();
+      
+    } else if(e.keyCode == 39) {
+      e.preventDefault();
+      view.lightbox_movie().click_right();
+    }
+  }
+
+  var close_lightbox = document.getElementById("close_lightbox");
+  close_lightbox.addEventListener('mousedown', onCloseLightbox);
+  window.addEventListener('keydown', assignAction)
+  var lightbox_switch = document.getElementById("lightbox_switch");
+  lightbox_switch.addEventListener('mousedown', onOpenLightbox);
+
+
+
+  var view = window.view = new View
+
+  ko.applyBindings(view);
+
+</script>

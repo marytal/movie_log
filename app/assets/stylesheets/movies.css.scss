@@ -1,0 +1,57 @@
+// Place all the styles related to the movies controller here.
+// They will automatically be included in application.css.
+// You can use Sass (SCSS) here: http://sass-lang.com/
+
+.poster {
+  max-width: 100%;
+  max-height: 100%;
+  min-height: 250px;
+  border: 10px solid black;
+}
+
+div ul {
+
+}
+.thing {
+  float: left;
+}
+
+
+
+.movie_title {
+  position: relative;
+  left: 30%;
+}
+
+li {
+  list-style-type: none;
+}
+
+
+.edit_movie_poster_container {
+  position: absolute;
+  left: 55%;
+  top: 10%;
+  min-height: 300px;
+  max-height: 60%;
+  overflow: scroll;
+  
+}
+
+.edit_movie_poster {
+  min-height: 300px;
+  max-height: 600px;
+  
+}
+
+.edit_movie_container {
+  padding-left: 25px;
+  padding-bottom: 25px;
+}
+
+#movie_of_the_week {
+  position: relative;
+  max-height: 80%;
+  max-width: 80%;
+  border: 2px solid black;
+}

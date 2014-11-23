@@ -1,0 +1,113 @@
+
+
+
+
+
+
+  <div class="container-fluid">
+      <div class="row">
+        <div class="col-md-4">
+          <div class="index_users_container">
+            <div class="users_title"> Public Users </div> <br> 
+              <% User.where({share_status: "public"}).each do |user|%>
+                <img class="tiny_img" src="<%= user.profile_picture %>">
+                <%= link_to user.name.capitalize, :action => :show, :id => user.id %> 
+                <br><br>
+              <%end%>
+          </div>
+          <div class="index_users_container">
+            <div class="users_title">Statistics</div>
+            <!-- <h5>Total Movies Logged: </h5><span data-bind="text: total_movies"></span> <br>
+            Most Frequent Logger: <span data-bind="text: most_frequent_logger_name"></span>
+            <img class="most_frequent_logger" data-bind="attr: {src: most_frequent_logger_img}" src="#">  -->
+            <h5>Coming Soon </h5>
+          </div>
+        </div>
+        <div class="col-md-8">
+          <p style="font-size: 25px; font-weight: bolder;">Just added: <span>The Hunger Games</span></p>
+          <img id="movie_of_the_week" src="http://www.metronews.fr/_internal/gxml!0/2qijkhn0ctpwx8acoz5fxkpvtmr4nbh$2tv144un75chjwp3i8f962th2l64072/Katniss_Payoff_France-2.jpeg">
+        </div>
+      </div>
+  </div>
+
+
+ 
+
+ 
+<!--  <h5>Today: </h5><span data-bind="text: total_movies_today"></span> <br> -->
+
+
+
+
+<!-- Recently logged movies + links
+
+Stats:
+Most active user - this: month, year, all time
+Most watched movie - this: month, year, all time
+Most recent users
+
+Recommended Movies:
+My personal preference
+
+
+Total (unique) movies: INTEGER
+All public users
+
+Most Active Members
+Most watched movies
+ -->
+
+
+
+
+
+
+
+
+
+<script>
+
+var View = function() {
+  var self = this;
+
+  // Stats
+
+  self.total_movies = ko.observable(0);
+  self.most_frequent_logger_name = ko.observable("None");
+  self.most_frequent_logger_img = ko.observable("#");
+  self.most_recent_logger = ko.observable();
+
+  $.get("/movies.json", function(movies) {
+
+    self.total_movies(movies.length);
+
+    var user_ids = [];
+    // var logged_today;
+
+    _.each(movies, function(movie) {
+      user_ids.push(movie.user_id);
+    })
+
+    var most_frequent_logger_id = _.chain(user_ids).countBy().pairs().max(_.last).head().value();
+
+    $.get("/users.json", function(users) {
+      var length = users.length;
+      for(var i = 0; i < length; i++){
+        if (users[i].id == most_frequent_logger_id) {
+          name = users[i].name
+          self.most_frequent_logger_name(name);
+          self.most_frequent_logger_img(users[i].profile_picture);
+          return;
+        }
+      }
+    })
+    
+  })
+
+}
+
+var view = window.view = new View
+
+ko.applyBindings(view);
+
+</script>

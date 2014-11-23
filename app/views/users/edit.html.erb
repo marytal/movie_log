@@ -1,0 +1,26 @@
+
+<div class="stats_border">
+  <form action="/uploaded_images/profile" method="POST" enctype="multipart/form-data">
+    Uploading a profile picture:
+    <input type="file" name="uploaded_image"> <br>
+    <input type="hidden" name="authenticity_token" value="<%= form_authenticity_token %>">
+    <input type="submit">
+  </form>
+</div>
+
+<div>
+  <img class="edit_profile_picture" src="<%= @user.profile_picture%>">
+</div>
+
+<div class="stats_border">
+  <form action="/users/<%=@user.id%>/edit" method="POST">
+    Make my profile: <br>
+    Public <input type="radio" name="share_status" value="public"> <br>
+    Private <input type="radio" name="share_status" value="private"> <br>
+    <input type="hidden" name="authenticity_token" value="<%= form_authenticity_token %>">
+    <input type="submit" name="Save">
+
+  </form>
+</div>
+
+<%= link_to "Delete Log?", delete_user_path(@user) %>

@@ -1,0 +1,69 @@
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-md-6 left_intro">
+      <h1 class="welcome_text">My Movie Log</h1> <br> <br>
+      <div data-bind="if: displayButton">
+        <button class="big_button" data-bind="click: changeToDisplayCreate" type="submit" style="color: black;"><span>Create Your Log</span></button>
+      </div><br>
+      <div data-bind="if: displayButton">
+        <a href="/"><button class="big_button" type="submit"><span style="color: black;">Explore</span></button></a>
+      </div>
+      
+      <div data-bind="if: displayCreate" class="centered">
+        Got an account? <a data-bind="click: changeToDisplayLogin" href="#" style="color:black;">Log in</a>!
+        <form action="/users" method="POST">
+          <input type="email" required="true" placeholder="email" name="email"> <br>
+          <input type="password" required="true" placeholder="password" name="password"> <br>
+          <input type="text" required="true" placeholder="name (first and last)" name="name"> <br> <br>
+          <input type="hidden" name="authenticity_token" value="<%= form_authenticity_token %>">
+          <input type="submit"> 
+        </form>
+      </div>
+      <div data-bind="if: displayLogin" class="centered">
+        <a data-bind="click: changeToDisplayCreate" href="#" style="color:black;">Don't have an account? join here!</a><br>
+        <form action="/users/login" method="POST">
+          <input type="text" placeholder="email" name="email"> <br>
+          <input type="password" placeholder="password" name="password"> <br> <br>
+          <input type="hidden" name="authenticity_token" value="<%= form_authenticity_token %>">
+          <input type="submit"> 
+        </form>
+      </div>
+    </div>
+    <div class="col-md-6 right_intro">
+      <h1 class="welcome_text">My Book Log</h1> <br> <br>
+      <p class="welcome_text" style="font-size:30px;"> Coming soon :) </p>
+    </div>
+  </div>
+</div>
+<script type="text/javascript">
+
+var View = function() {
+  var self = this;
+
+  // Login/create/button
+
+  self.displayCreate = ko.observable(false);
+  self.displayButton = ko.observable(true);
+  self.displayLogin = ko.observable(false);
+
+
+  self.changeToDisplayCreate = function() {
+    self.displayCreate(true);
+    self.displayButton(false);
+    self.displayLogin(false);
+  }
+
+  self.changeToDisplayLogin = function() {
+    self.displayCreate(false);
+    self.displayLogin(true);
+  }
+
+
+
+}
+
+var view = window.view = new View
+
+ko.applyBindings(view);
+
+</script>

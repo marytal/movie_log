@@ -1,0 +1,31 @@
+
+<img id="login_background" src="http://jewishexponent.com/sites/default/files/styles/facebook_og-image/public/event/main_image/Movie.jpg">
+
+<div class="form_background">
+  <form class="form-horizontal" role="form" action="/users" method="POST">
+    <input type="hidden" name="authenticity_token" value="<%= form_authenticity_token %>">
+    <div class="form-group">
+      <a class="centered" href="/users/new" style="color:black;">Don't have an account? join here!</a><br>
+      <label class="col-sm-2 control-label" style="color:white;">Email</label>
+      <div class="col-sm-10">
+        <input style="width:15%;" type="text" class="form-control" placeholder="Email" name="email">
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="col-sm-2 control-label" style="color:white;">Name</label>
+      <div class="col-sm-10">
+        <input style="width:15%;" type="text" class="form-control" placeholder="Name (first and last)" name="name">
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="col-sm-2 control-label" style="color:white;">Password</label>
+      <div class="col-sm-10">
+        <input style="width:15%;" type="password" class="form-control" placeholder="Password" name="password">
+      </div>
+    </div>
+      <div class="col-sm-offset-2 col-sm-10">
+        <button type="submit" class="btn btn-default">Sign in</button>
+      </div>
+    </div>
+  </form>
+</div>
