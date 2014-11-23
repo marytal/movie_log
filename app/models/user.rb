@@ -1,8 +1,6 @@
 class User < ActiveRecord::Base
   has_many :uploaded_images
 
-  attr_accessor :password
-
   validates_presence_of :email, :name, :password #not working, fix this.
   validates_uniqueness_of :email
 
@@ -10,8 +8,11 @@ class User < ActiveRecord::Base
     !!self.password
   end
 
+  def password
+    self.password_hash
+  end
+
   def password=(_password)
-    @password = _password
     self.password_hash = Digest::SHA256.hexdigest(_password)
   end
 

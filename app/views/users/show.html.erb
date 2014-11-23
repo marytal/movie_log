@@ -14,7 +14,7 @@ To do: add right side, movie recommendations, other users, interesting articles 
       <div class="col-md-4">
         <img class="profile_picture" src="<%= @user_page.profile_picture%>">
         <p class="profile_name"> <%= @user_page.name.capitalize %> </p> <br> <br> <br>
-        <%if @user%>
+        <%if @user && @user.id == @user_page.id %>
           <li style="float: right; clear:both;"><%= link_to 'Edit Page', edit_user_path(@user.id) %></li>
         <%end%>
         <div class="stats_border">

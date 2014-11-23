@@ -7,7 +7,7 @@ class UploadedImagesController < ApplicationController
 
   def create
     if !params[:uploaded_image]
-      flash[:error] = "You must upload an image. All other fields do not require a submit."
+      flash[:error] = "You must upload an image."
       @movie_id = params[:movie_id]
       return;
     end
@@ -24,12 +24,13 @@ class UploadedImagesController < ApplicationController
   end
 
   def create_profile_picture
-
     return redirect_to "/users/#{@user.id}/edit" if !@uploaded_image
 
     flash[:success] = "Profile picture saved."
     @uploaded_image.update({used_for: "profile"})
-    @user.update({profile_picture: "/uploaded_images/#{@uploaded_image.id}"})
+    p @uploaded_image.id
+    user = User.find(@user.id);
+    user.update({profile_picture: "/uploaded_images/#{@uploaded_image.id}"})
     redirect_to "/users/#{@user.id}/edit"
   end
 
